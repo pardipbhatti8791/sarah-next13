@@ -1,0 +1,90 @@
+"use client";
+import React from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import { IStoryTheme } from "@/store/storyTheme/storyThemeInterface";
+
+export const useStoryThemesColumns = () => {
+  return React.useMemo<ColumnDef<IStoryTheme>[]>(
+    () => [
+      {
+        id: "title",
+        accessorFn: (row) => row.title,
+        header: () => <span>Title</span>,
+        cell: (info) => info.getValue(),
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorFn: (row) => row.description,
+        id: "description",
+        cell: (info) => info.getValue(),
+        header: () => <span>Description</span>,
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorFn: (row) => row.status,
+        id: "status",
+        cell: (info) => info.getValue(),
+        header: () => <span>Status</span>,
+        footer: (props) => props.column.id,
+      },
+      {
+        header: () => <span>Actions</span>,
+        id: "actions",
+        cell: (row) => (
+          <div className="flex gap-2">
+            <div
+              onClick={() => {
+                // store.updateDealerEdit(true);
+                // store.openModal({
+                //   type: "AddDealer",
+                //   props: { token: token, id: row.cell.row.original.id },
+                // });
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-pencil cursor-pointer"
+              >
+                <line x1="18" x2="22" y1="2" y2="6" />
+                <path d="M7.5 20.5 19 9l-4-4L3.5 16.5 2 22z" />
+              </svg>
+            </div>
+            <div
+              onClick={() => {
+                // store.deleteDealer(row.cell.row.original.id, token);
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-trash-2 cursor-pointer"
+              >
+                <path d="M3 6h18" />
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                <line x1="10" x2="10" y1="11" y2="17" />
+                <line x1="14" x2="14" y1="11" y2="17" />
+              </svg>
+            </div>
+          </div>
+        ),
+      },
+    ],
+    []
+  );
+};
