@@ -5,19 +5,20 @@ import { IStoryTheme } from "@/store/storyTheme/storyThemeInterface";
 import { useStore } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { IStoryCharacter } from "@/store/storyCharacter/storyCharacterInterface";
 
-export const useStoryThemesColumns = () => {
+export const useStoryCharacterColumns = () => {
   const store = useStore((state) => state);
   const router = useRouter();
   const { status, data } = useSession();
 
   useEffect(() => {
     if (status === "authenticated") {
-      store.getStoryThemes({ page: 1, limit: 10 });
+      store.getStoryCharacter({ page: 1, limit: 10 });
     }
   }, [status]);
 
-  return React.useMemo<ColumnDef<IStoryTheme>[]>(
+  return React.useMemo<ColumnDef<IStoryCharacter>[]>(
     () => [
       {
         id: "title",
@@ -33,24 +34,19 @@ export const useStoryThemesColumns = () => {
         header: () => <span>Description</span>,
         footer: (props) => props.column.id,
       },
-      {
-        accessorFn: (row) => row.status,
-        id: "status",
-        cell: (info) => info.getValue(),
-        header: () => <span>Status</span>,
-        footer: (props) => props.column.id,
-      },
+
       {
         header: () => <span>Actions</span>,
         id: "actions",
         cell: (row) => (
           <div className="flex gap-2">
             <div
-              onClick={() => {
-                router.push(
-                  `/dashboard/story-theme/edit-story/${row.row.original.id}`
-                );
-              }}
+              onClick={
+                () => "#"
+                //   {
+                //   router.push(`/dashboard/edit-character/${row.row.original.id}`);
+                // }
+              }
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -69,8 +65,9 @@ export const useStoryThemesColumns = () => {
               </svg>
             </div>
             <div
-              onClick={() =>
-                store.deleteStoryTheme({ id: row.cell.row.original.id })
+              onClick={
+                () => "#"
+                // store.deleteStoryTheme({ id: row.cell.row.original.id })
               }
             >
               <svg

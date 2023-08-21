@@ -10,3 +10,11 @@ export const dateToStringDate = (date: Date) => {
   console.log("d", d);
   return d;
 };
+
+export const themeOptions = [
+  { value: "theme", label: "Theme" },
+  { value: "places", label: "Places" },
+  { value: "weathers", label: "Weathers" },
+  { value: "times", label: "Times" },
+  { value: "moods", label: "Moods" },
+];

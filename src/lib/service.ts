@@ -1,16 +1,22 @@
 import { useStore } from "@/store/store";
+import {
+  getCharacterParams,
+  getUploadParams,
+} from "@/store/storyCharacter/storyCharacterInterface";
 import { getStoryParams } from "@/store/storyTheme/storyThemeInterface";
 import axios, { AxiosInstance } from "axios";
 import { signOut } from "next-auth/react";
 import { toast } from "react-hot-toast";
 
 const unauthorizedCode = [401];
-export const BASE_URL = "http://localhost:3015/api/v1";
+export const BASE_URL = "https://talez.gpcoders.dev/api/v1";
+
+// "http://localhost:3015/api/v1";
 
 // @ts-ignore
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
-  // baseURL: "https://rvacbc.gpcoders.dev",
+  // baseURL: "https://talez.gpcoders.dev/api/v1/",
 });
 
 axiosInstance.interceptors?.request.use(
@@ -49,7 +55,17 @@ export default axiosInstance;
 export const URI = {
   auth: "/signin",
   storyThemes: {
+    updateStoryTheme: (id: number) => `/story-theme/edit/${id}`,
     getStoryThemes: ({ page, limit }: getStoryParams) =>
       `/story-themes/?page=${page}&limit=${limit}`,
+  },
+  createStoryTheme: "/story-theme/create",
+  deleteStoryTheme: (id: number) => `/delete-story-themes/${id}`,
+
+  StoryCharacter: {
+    getStoryCharacter: ({ page, limit }: getCharacterParams) =>
+      `/story-characters?page=${page}&limit=${limit}`,
+    createBackground: "/characters-background/create",
+    uploadAttachment: "/media/upload",
   },
 };
