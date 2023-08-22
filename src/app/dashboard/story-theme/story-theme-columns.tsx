@@ -1,15 +1,17 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { IStoryTheme } from "@/store/storyTheme/storyThemeInterface";
 import { useStore } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { CreateCharacterBackground } from "@/components/c-character-backgrounds/CreateCharacterBackground";
 
 export const useStoryThemesColumns = () => {
   const store = useStore((state) => state);
   const router = useRouter();
   const { status, data } = useSession();
+  const [titleOptions, setTitleOptions] = useState([]);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -26,6 +28,7 @@ export const useStoryThemesColumns = () => {
         cell: (info) => info.getValue(),
         footer: (props) => props.column.id,
       },
+
       {
         accessorFn: (row) => row.description,
         id: "description",
@@ -96,6 +99,7 @@ export const useStoryThemesColumns = () => {
         ),
       },
     ],
+
     []
   );
 };

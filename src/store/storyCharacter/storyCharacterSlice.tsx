@@ -47,6 +47,7 @@ export const storyCharacterSlice: StateCreator<
     set(() => ({ createCharacterLoading: true }));
     try {
       await StoryCharacterService.createStoryCharacter(fn);
+
       set(() => ({ createCharacterLoading: false }));
       useStore.getState().getStoryCharacter({ page: 1, limit: 10 });
       toast.dismiss(tid);
@@ -62,12 +63,30 @@ export const storyCharacterSlice: StateCreator<
   createUploadAttachment: async (fn) => {
     set(() => ({ uploadAttachmentLoading: true }));
     try {
-      const resp: any = await StoryCharacterService.uploadAttachment(fn);
-      console.log("res=====>", resp);
+      await StoryCharacterService.uploadAttachment(fn).then((res) => {
+        console.log("message ===> ", res);
+      });
+
       set(() => ({ uploadAttachmentLoading: false }));
     } catch (error: any) {
       toast.error(JSON.stringify(error.res));
     }
     set(() => ({ uploadAttachmentLoading: false }));
+  },
+
+  character: async (fn) => {
+    try {
+      await StoryCharacterService.character(fn);
+    } catch (error: any) {
+      toast.error(JSON.stringify(error.res));
+    }
+  },
+
+  background: async (fn) => {
+    try {
+      await StoryCharacterService.background(fn);
+    } catch (error: any) {
+      toast.error(JSON.stringify(error.res));
+    }
   },
 });

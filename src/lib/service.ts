@@ -45,7 +45,6 @@ axiosInstance.interceptors?.response.use(
       toast.error("Valid authorization required to perform this action");
       signOut();
     }
-
     return Promise.reject(error);
   }
 );
@@ -67,5 +66,7 @@ export const URI = {
       `/story-characters?page=${page}&limit=${limit}`,
     createBackground: "/characters-background/create",
     uploadAttachment: "/media/upload",
+    character: "/story-characters-mobile?id=0",
+    background: "/story-backgrounds-mobile?id=1",
   },
 };

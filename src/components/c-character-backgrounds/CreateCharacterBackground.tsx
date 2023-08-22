@@ -1,13 +1,14 @@
 "use client";
 import { themeOptions } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
 import Select from "react-select";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useStore } from "@/store/store";
 import { ICreateStoryCharacter } from "@/store/storyCharacter/storyCharacterInterface";
-import StoryCharacterService from "@/services/StoryCharacterService";
 import { toast } from "react-hot-toast";
+import StoryCharacterService from "@/services/StoryCharacterService";
+import { useStoryThemesColumns } from "@/app/dashboard/story-theme/story-theme-columns";
 
 const StoryCharacterSchema = Yup.object({
   title: Yup.string().required("* Title is required field"),
@@ -28,6 +29,8 @@ const StoryCharacterSchema = Yup.object({
 });
 
 export const CreateCharacterBackground = (props: any) => {
+  const [attachmentId, setAttachmentId] = useState<number | null>(null);
+  const [selectedTitleId, setSelectedTitleId] = useState(null);
   const CharacterBackgroundType = [
     {
       label: "Character",
@@ -39,6 +42,26 @@ export const CreateCharacterBackground = (props: any) => {
     },
   ];
 
+  const handleAttachmentChange = async (event) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const formData = new FormData();
+      formData.append("file", event.target.files[0]);
+
+      const selectedType = formik.values.CharacterBackgroundType.value;
+
+      // Set the type based on the selectedType
+      const type = selectedType === 0 ? 0 : 1;
+      formik.setFieldValue("type", type);
+
+      selectedType === 0
+        ? StoryCharacterService.character(formData)
+        : StoryCharacterService.background(formData);
+      const response = await StoryCharacterService.uploadAttachment(formData);
+      setAttachmentId(response.data.id);
+      formik.setFieldValue("attachment_id", response.data.id);
+    }
+  };
+
   const store = useStore((state) => state);
 
   const formik = useFormik({
@@ -48,24 +71,23 @@ export const CreateCharacterBackground = (props: any) => {
       themeType: { value: "", label: "" },
       CharacterBackgroundType: { value: "", label: "" },
       attachment_id: 0,
-      story_theme_id: 0,
       type: 0,
+      story_theme_id: 0,
     },
     validationSchema: StoryCharacterSchema,
 
     onSubmit: async (values: any, { resetForm }) => {
       const { themeType, CharacterBackgroundType, ...rest } = values;
-      const formData = new FormData();
-      formData.append("file", values.attachment_id[0]);
+
       try {
-        //@ts-ignore
-        store.createUploadAttachment(formData);
         const nValues: ICreateStoryCharacter = rest;
         nValues.themeType = themeType.value;
         nValues.CharacterBackgroundType = CharacterBackgroundType.value;
+
         store.createStoryCharacter(nValues);
+        resetForm();
       } catch (error) {
-        toast.error("Error uploading attachment");
+        toast.error("Error");
       }
     },
   });
@@ -129,27 +151,18 @@ export const CreateCharacterBackground = (props: any) => {
             <input
               type="file"
               className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter dark:file:bg-white/30 dark:file:text-white file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:focus:border-primary"
-              onChange={(e) =>
-                formik.setFieldValue("attachment_id", e.target.files)
-              }
+              onChange={handleAttachmentChange}
             />
             <div className="text-red-400">{formik?.errors?.attachment_id}</div>
           </div>
           <div className="mb-4.5">
             <label className="block mb-3 text-sm font-medium text-black dark:text-white">
-              Theme Type
+              Theme
             </label>
             <Select
-              options={
-                themeOptions.map((user) => {
-                  return {
-                    value: user.value,
-                    label: user.label,
-                  };
-                }) || []
-              }
+              // options={themeOptions}
               onChange={(value: any) => {
-                formik.setFieldValue("themeType", value);
+                formik.setFieldValue("theme", value);
               }}
             />
             <div className="text-red-600">

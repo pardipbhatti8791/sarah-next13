@@ -23,6 +23,13 @@ class StoryCharacterService {
   uploadAttachment(data: ICharacterStory) {
     return axiosInstance.post(URI.StoryCharacter.uploadAttachment, data);
   }
+  character(data: ICharacterStory) {
+    return axiosInstance.get(URI.StoryCharacter.character, data);
+  }
+
+  background(data: ICharacterStory) {
+    return axiosInstance.get(URI.StoryCharacter.background, data);
+  }
 }
 
 export default new StoryCharacterService();

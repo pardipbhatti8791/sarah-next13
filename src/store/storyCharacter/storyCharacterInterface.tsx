@@ -10,6 +10,8 @@ export interface ICharacterInterface {
   //upload attachment
   uploadAttachmentLoading: boolean;
   createUploadAttachment: (fn: Attachment) => void;
+  character: (fn: Attachment) => void;
+  background: (fn: Attachment) => void;
 }
 
 export default interface Attachment {
@@ -24,20 +26,20 @@ export interface IStoryCharacters {
 
 export interface IStoryCharacter {
   id: number;
-  type: number;
+  type: any;
   title: string;
   description: string;
   attachment_id: number;
-  story_theme_id: number;
+  story_theme_id: any;
   themeType: string;
   CharacterBackgroundType: string;
 }
 export interface ICreateStoryCharacter {
-  type: number;
+  type: any;
   title: string;
   description: string;
   attachment_id: number;
-  story_theme_id: number;
+  story_theme_id: any;
   themeType: string;
   CharacterBackgroundType: string;
 }
