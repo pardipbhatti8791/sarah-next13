@@ -41,12 +41,11 @@ export const useStoryCharacterColumns = () => {
         cell: (row) => (
           <div className="flex gap-2">
             <div
-              onClick={
-                () => "#"
-                //   {
-                //   router.push(`/dashboard/edit-character/${row.row.original.id}`);
-                // }
-              }
+              onClick={() => {
+                router.push(
+                  `/dashboard/character-backgrounds/edit-character/${row.row.original.id}`
+                );
+              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -65,9 +64,8 @@ export const useStoryCharacterColumns = () => {
               </svg>
             </div>
             <div
-              onClick={
-                () => "#"
-                // store.deleteStoryTheme({ id: row.cell.row.original.id })
+              onClick={() =>
+                store.deleteCharacter({ id: row.cell.row.original.id })
               }
             >
               <svg

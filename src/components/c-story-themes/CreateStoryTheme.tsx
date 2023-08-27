@@ -45,6 +45,8 @@ export const CreateStoryTheme = () => {
     },
   });
 
+  // console.log("ms", formik.values.themeType);
+
   return (
     <div className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
       <form onSubmit={formik.handleSubmit}>
@@ -69,7 +71,7 @@ export const CreateStoryTheme = () => {
               </label>
               <textarea
                 rows={6}
-                placeholder="Default textarea"
+                placeholder="Enter Description"
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                 onChange={(e) =>
                   formik.setFieldValue("description", e.target.value)

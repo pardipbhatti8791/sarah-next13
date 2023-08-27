@@ -68,5 +68,7 @@ export const URI = {
     uploadAttachment: "/media/upload",
     character: "/story-characters-mobile?id=0",
     background: "/story-backgrounds-mobile?id=1",
+    updateCharacter: (id: number) => `/story-characters/edit/${id}`,
+    deleteCharacter: (id: number) => `/delete-story-character/${id}`,
   },
 };

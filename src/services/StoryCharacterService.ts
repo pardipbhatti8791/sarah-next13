@@ -3,6 +3,7 @@ import {
   ICreateStoryCharacter,
   getCharacterParams,
   getUploadParams,
+  updateCharacterTheme,
 } from "@/store/storyCharacter/storyCharacterInterface";
 
 export interface ICharacterStory {
@@ -29,6 +30,14 @@ class StoryCharacterService {
 
   background(data: ICharacterStory) {
     return axiosInstance.get(URI.StoryCharacter.background, data);
+  }
+
+  updateCharacter({ id }: ICharacterStory, data: updateCharacterTheme) {
+    return axiosInstance.patch(URI.StoryCharacter.updateCharacter(id!), data);
+  }
+
+  deleteCharacter({ id }: ICharacterStory) {
+    return axiosInstance.delete(URI.StoryCharacter.deleteCharacter(id!));
   }
 }
 
