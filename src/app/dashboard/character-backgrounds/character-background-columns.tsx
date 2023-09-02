@@ -12,12 +12,6 @@ export const useStoryCharacterColumns = () => {
   const router = useRouter();
   const { status, data } = useSession();
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      store.getStoryCharacter({ page: 1, limit: 10 });
-    }
-  }, [status]);
-
   return React.useMemo<ColumnDef<IStoryCharacter>[]>(
     () => [
       {

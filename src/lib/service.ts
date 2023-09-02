@@ -66,9 +66,22 @@ export const URI = {
       `/story-characters?page=${page}&limit=${limit}`,
     createBackground: "/characters-background/create",
     uploadAttachment: "/media/upload",
+    getAllAttachment: ({ type, page }: getUploadParams) =>
+      `/media/${type}/${page}`,
     character: "/story-characters-mobile?id=0",
     background: "/story-backgrounds-mobile?id=1",
     updateCharacter: (id: number) => `/story-characters/edit/${id}`,
     deleteCharacter: (id: number) => `/delete-story-character/${id}`,
+  },
+  Users: {
+    getAllUsers: "/users/all",
+    inActiveUsers: "/user-inactive-count",
+    activeUsers: "/user-active-count",
+    updateUsersByAdmin: (id: number) => `/users/edit-user-by-admin/${id}`,
+    deleteUser: (id: number) => `/delete-user/${id}`,
+  },
+  storyModuleAdmin: {
+    getAllStoryModuleAdmin: (user_id: number) =>
+      `/all-stories-admin/${user_id}`,
   },
 };

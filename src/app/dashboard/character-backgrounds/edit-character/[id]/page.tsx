@@ -36,7 +36,7 @@ const EditCreateCharacterBackground = (props: any) => {
   const InitialData = store.storyCharacters.rows.filter(
     (items) => items.id === +props.params.id
   );
-  // console.log("Initial Data", InitialData[0]);
+  // console.log("Initial Values for edit page", InitialData);
 
   const type = [
     {
@@ -68,7 +68,6 @@ const EditCreateCharacterBackground = (props: any) => {
           label: items.title,
         })) || [];
       setThemeOption(StoryThemeData);
-      console.log("Story", StoryThemeData);
     });
   }, []);
 
@@ -77,15 +76,15 @@ const EditCreateCharacterBackground = (props: any) => {
       title: InitialData[0]?.title || "",
       description: InitialData[0]?.description || "",
       story_theme_id: {
-        value: InitialData[0]?.story_theme_id || "",
+        value: InitialData[0]?.story_theme_id || 0,
         label: InitialData[0]?.story_theme_id || "",
       },
 
       type: {
-        value: InitialData[0]?.type || "",
+        value: InitialData[0]?.type || 0,
         label: InitialData[0]?.type || "",
       },
-      attachment_id: InitialData[0]?.attachment_id || "",
+      attachment_id: InitialData[0]?.attachment_id || 0,
     },
 
     validationSchema: StoryCharacterSchema,
@@ -95,20 +94,19 @@ const EditCreateCharacterBackground = (props: any) => {
       const nValues: IStoryCharacter = rest;
       nValues.story_theme_id = story_theme_id.value;
       nValues.type = type.value;
-      // try {
-      //   await store.updateStoryCharacter(
-      //     { id: +props.params.id },
-      //     nValues,
-      //     router
-      //   );
-
-      //   resetForm();
-      // } catch (error) {
-      //   console.log("error", error);
-      // }
+      try {
+        await store.updateStoryCharacter(
+          { id: +props.params.id },
+          nValues,
+          router
+        );
+        console.log(nValues);
+        resetForm();
+      } catch (error) {
+        console.log("error", error);
+      }
     },
   });
-  console.log("Init", formik.values.story_theme_id);
   return (
     <div
       style={{

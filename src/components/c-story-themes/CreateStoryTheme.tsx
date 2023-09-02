@@ -45,8 +45,6 @@ export const CreateStoryTheme = () => {
     },
   });
 
-  // console.log("ms", formik.values.themeType);
-
   return (
     <div className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
       <form onSubmit={formik.handleSubmit}>

@@ -9,20 +9,17 @@ import {
 } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
 import { Button } from "../button";
-import { getStoryParams } from "@/store/storyTheme/storyThemeInterface";
 
 interface IDataProps<T, C> {
   data: T;
-  getData: ({ page }: getStoryParams) => void;
   loading: boolean;
   columnsData: C;
 }
 
 type CTableCompnentI<T = any, C = any> = React.FC<IDataProps<T, C>>;
 
-const CTableCompnent: CTableCompnentI = ({
+const UserTable: CTableCompnentI = ({
   data: { rows, pageCount },
-  getData,
   loading,
   columnsData,
 }) => {
@@ -36,10 +33,6 @@ const CTableCompnent: CTableCompnentI = ({
     pageIndex,
     pageSize,
   };
-
-  useEffect(() => {
-    getData({ page: fetchDataOptions.pageIndex + 1, limit: 10 });
-  }, [fetchDataOptions.pageIndex]);
 
   const defaultData = React.useMemo(() => [], []);
 
@@ -176,4 +169,4 @@ const CTableCompnent: CTableCompnentI = ({
   );
 };
 
-export default CTableCompnent;
+export default UserTable;

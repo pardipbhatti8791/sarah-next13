@@ -43,6 +43,20 @@ export const storyCharacterSlice: StateCreator<
     }
   },
 
+  getAllAttachment: async ({ page, type }) => {
+    set(() => ({ uploadAttachmentLoading: true }));
+    try {
+      const resp = await StoryCharacterService.getAttachments({
+        page,
+        type,
+      });
+      set(() => ({ attachments: resp.data, uploadAttachmentLoading: false }));
+    } catch (error: any) {
+      set(() => ({ storyCharacterLoading: false }));
+      toast.error(JSON.stringify(error.response.data));
+    }
+  },
+
   createCharacterLoading: false,
   createStoryCharacter: async (fn) => {
     const tid = toast.loading("Creating new Character & Background...");

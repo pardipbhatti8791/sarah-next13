@@ -64,6 +64,7 @@ export const CreateCharacterBackground = (props: any) => {
           value: items.id,
           label: items.title,
         })) || [];
+      // console.log("StoryTheme", StoryThemeData);
       setThemeOption(StoryThemeData);
     });
   }, []);

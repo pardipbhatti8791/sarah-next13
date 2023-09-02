@@ -1,14 +1,16 @@
 import { ICharacterStory } from "@/services/StoryCharacterService";
-
 export type getCharacterParams = { page: number; limit: number };
 export type getUploadParams = { page: number; type: number };
+
 export interface ICharacterInterface {
   storyCharacterLoading: boolean;
   storyCharacters: (fn: IStoryCharacters) => any;
+  attachments: (fn: IStoryCharacters) => any;
   getStoryCharacter: ({ page, limit }: getCharacterParams) => any;
   //create story character
   createCharacterLoading: boolean;
   createStoryCharacter: (fn: ICreateStoryCharacter) => void;
+  //Update story character
   updateStoryCharacter: (
     fn: ICharacterStory,
     data: updateCharacterTheme,
@@ -16,6 +18,7 @@ export interface ICharacterInterface {
     id: number
   ) => any;
   //upload attachment
+  getAllAttachment: ({ page, type }: getUploadParams) => any;
   uploadAttachmentLoading: boolean;
   createUploadAttachment: (fn: IAttachment) => void;
   character: (fn: IAttachment) => void;
@@ -35,21 +38,17 @@ export interface IStoryCharacters {
 
 export interface IStoryCharacter {
   id: number;
-  type: any;
+  type: number;
   title: string;
   description: string;
   attachment_id: number;
-  story_theme_id: any;
-  themeType: string;
-  CharacterBackgroundType: string;
+  story_theme_id: number;
 }
 export interface ICreateStoryCharacter {
-  type: any;
+  type: number;
   title: string;
   description: string;
   attachment_id: number;
-  story_theme_id: any;
-  themeType: string;
-  CharacterBackgroundType: string;
+  story_theme_id: number;
 }
 export type updateCharacterTheme = Partial<IStoryCharacter>;

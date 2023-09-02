@@ -24,6 +24,12 @@ class StoryCharacterService {
   uploadAttachment(data: ICharacterStory) {
     return axiosInstance.post(URI.StoryCharacter.uploadAttachment, data);
   }
+  getAttachments({ page, type }: getUploadParams) {
+    return axiosInstance.get(
+      URI.StoryCharacter.getAllAttachment({ page, type })
+    );
+  }
+
   character(data: ICharacterStory) {
     return axiosInstance.get(URI.StoryCharacter.character, data);
   }
