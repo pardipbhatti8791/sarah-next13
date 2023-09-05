@@ -31,4 +31,27 @@ export const allStoriesModuleSlice: StateCreator<
       }
     }
   },
+  deleteStory: async ({ id }) => {
+    set(() => ({ allStoriesAdminLoading: true }));
+    const tid = toast.loading("deleting.....");
+    try {
+      await StoriesModuleService.deleteStory({ id: id! });
+      toast.success("Deleted Successfully", { id: tid });
+      set((store) => ({
+        allStoriesAdmin: store.allStoriesAdmin.filter(
+          (story) => story.id !== id
+        ),
+      }));
+    } catch (error: any) {
+      set(() => ({ allStoriesAdminLoading: false }));
+      if (error.response.status === 401) {
+        toast.error("Unauthorized request");
+        signOut();
+      } else {
+        toast.error(JSON.stringify(error.response.data), {
+          id: tid,
+        });
+      }
+    }
+  },
 });

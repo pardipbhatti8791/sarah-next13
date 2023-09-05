@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { useFormik } from "formik";
@@ -8,7 +7,6 @@ import { useStore } from "@/store/store";
 import { ICreateStoryCharacter } from "@/store/storyCharacter/storyCharacterInterface";
 import { toast } from "react-hot-toast";
 import StoryCharacterService from "@/services/StoryCharacterService";
-import { useStoryThemesColumns } from "@/app/dashboard/story-theme/story-theme-columns";
 import StoryThemesService from "@/services/StoryThemesService";
 
 const StoryCharacterSchema = Yup.object({
@@ -64,7 +62,7 @@ export const CreateCharacterBackground = (props: any) => {
           value: items.id,
           label: items.title,
         })) || [];
-      // console.log("StoryTheme", StoryThemeData);
+
       setThemeOption(StoryThemeData);
     });
   }, []);

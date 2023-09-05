@@ -64,7 +64,6 @@ export const allUsersSlice: StateCreator<IUserRoot, [], [], IUserRoot> = (
 
     try {
       const resp = await UsersService.UpdateUsersbyAdmin({ id }, data);
-      console.log("res", resp);
       toast.success("Updated", { id: tid });
     } catch (error: any) {
       if (error.response.status === 401) {
@@ -86,6 +85,26 @@ export const allUsersSlice: StateCreator<IUserRoot, [], [], IUserRoot> = (
       set((store) => store.getAllUsers(""));
     } catch (error: any) {
       set(() => ({ usersLoading: false }));
+      if (error.response.status === 401) {
+        toast.error("Unauthorized request");
+        signOut();
+      } else {
+        toast.error(JSON.stringify(error.response.data), {
+          id: tid,
+        });
+      }
+    }
+  },
+  deleteManyUserLoading: false,
+  deleteUserMany: async (ids) => {
+    const tid = toast.loading("Deleting...");
+
+    try {
+      await UsersService.deleteUserMany(ids);
+      toast.success("Deleted Successfully", { id: tid });
+      set((store) => store.getAllUsers(""));
+    } catch (error: any) {
+      set(() => ({ deleteManyUserLoading: false }));
       if (error.response.status === 401) {
         toast.error("Unauthorized request");
         signOut();

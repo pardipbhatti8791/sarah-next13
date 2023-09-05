@@ -7,17 +7,17 @@ export interface ICharacterInterface {
   storyCharacters: (fn: IStoryCharacters) => any;
   attachments: (fn: IStoryCharacters) => any;
   getStoryCharacter: ({ page, limit }: getCharacterParams) => any;
-  //create story character
+
   createCharacterLoading: boolean;
   createStoryCharacter: (fn: ICreateStoryCharacter) => void;
-  //Update story character
+
   updateStoryCharacter: (
     fn: ICharacterStory,
     data: updateCharacterTheme,
     redirect: any,
     id: number
   ) => any;
-  //upload attachment
+
   getAllAttachment: ({ page, type }: getUploadParams) => any;
   uploadAttachmentLoading: boolean;
   createUploadAttachment: (fn: IAttachment) => void;
@@ -43,6 +43,7 @@ export interface IStoryCharacter {
   description: string;
   attachment_id: number;
   story_theme_id: number;
+  storyTheme: { value: string; label: string };
 }
 export interface ICreateStoryCharacter {
   type: number;
@@ -50,5 +51,6 @@ export interface ICreateStoryCharacter {
   description: string;
   attachment_id: number;
   story_theme_id: number;
+  storyTheme: { value: string; label: string };
 }
 export type updateCharacterTheme = Partial<IStoryCharacter>;

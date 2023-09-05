@@ -3,6 +3,7 @@ import axiosInstance, { URI } from "@/lib/service";
 export interface IStoryModule {
   user_id?: number;
   data?: any;
+  id?: number;
 }
 
 class StoryModuleService {
@@ -10,6 +11,9 @@ class StoryModuleService {
     return axiosInstance.get(
       URI.storyModuleAdmin.getAllStoryModuleAdmin(user_id!)
     );
+  }
+  deleteStory({ id }: IStoryModule) {
+    return axiosInstance.delete(URI.storyModuleAdmin.deleteStory(id!));
   }
 }
 export default new StoryModuleService();

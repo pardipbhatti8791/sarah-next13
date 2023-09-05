@@ -16,6 +16,8 @@ export interface IUserRoot {
     id: number
   ) => any;
   deleteUser: (fn: IUsersAdmin) => any;
+  deleteManyUserLoading: boolean;
+  deleteUserMany: (ids: string[]) => any;
 }
 
 export interface IUserAdmin {

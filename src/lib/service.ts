@@ -79,9 +79,11 @@ export const URI = {
     activeUsers: "/user-active-count",
     updateUsersByAdmin: (id: number) => `/users/edit-user-by-admin/${id}`,
     deleteUser: (id: number) => `/delete-user/${id}`,
+    deleteUsersMany: (ids: string) => `/users/delete-user-many/${ids}`,
   },
   storyModuleAdmin: {
     getAllStoryModuleAdmin: (user_id: number) =>
       `/all-stories-admin/${user_id}`,
+    deleteStory: (id: number) => `/story/story-delete?id=${id}`,
   },
 };

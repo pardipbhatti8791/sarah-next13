@@ -36,7 +36,6 @@ const EditCreateCharacterBackground = (props: any) => {
   const InitialData = store.storyCharacters.rows.filter(
     (items) => items.id === +props.params.id
   );
-  // console.log("Initial Values for edit page", InitialData);
 
   const type = [
     {
@@ -116,7 +115,6 @@ const EditCreateCharacterBackground = (props: any) => {
       }}
       className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark"
     >
-      {JSON.stringify(formik.initialValues)}
       <form onSubmit={formik.handleSubmit}>
         <div className="p-6.5">
           <div className="mb-4.5">

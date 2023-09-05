@@ -19,8 +19,7 @@ export const storyCharacterSlice: StateCreator<
         id: 0,
         title: "",
         description: "",
-        themeType: "",
-        CharacterBackgroundType: "",
+        storyTheme: { value: "", label: "" },
         type: 0,
         attachment_id: 0,
         story_theme_id: 0,
@@ -85,7 +84,7 @@ export const storyCharacterSlice: StateCreator<
       redirect.push("/dashboard/Character-backgrounds");
     } catch (error: any) {
       if (error.response.status === 401) {
-        toast.error("Unauthorized request !, Singing you out");
+        toast.error("Unauthorized request!,Signing you out");
         signOut();
       } else {
         toast.error(JSON.stringify(error.response.data), {
@@ -99,9 +98,7 @@ export const storyCharacterSlice: StateCreator<
   createUploadAttachment: async (fn) => {
     set(() => ({ uploadAttachmentLoading: true }));
     try {
-      await StoryCharacterService.uploadAttachment(fn).then((res) => {
-        console.log("message ===> ", res);
-      });
+      await StoryCharacterService.uploadAttachment(fn);
 
       set(() => ({ uploadAttachmentLoading: false }));
     } catch (error: any) {

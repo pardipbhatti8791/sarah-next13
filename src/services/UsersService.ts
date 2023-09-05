@@ -1,5 +1,8 @@
 import axiosInstance, { URI } from "@/lib/service";
-import { updateUserAdmin } from "@/store/users/usersInterface";
+import {
+  DeleteUserManyRequest,
+  updateUserAdmin,
+} from "@/store/users/usersInterface";
 
 export interface IUsersAdmin {
   id?: number;
@@ -21,6 +24,11 @@ class UserService {
   }
   deleteUser({ id }: IUsersAdmin) {
     return axiosInstance.delete(URI.Users.deleteUser(id!));
+  }
+
+  deleteUserMany(ids: string[]) {
+    const nids = ids.length > 0 ? ids.join(",") : "";
+    return axiosInstance.delete(URI.Users.deleteUsersMany(nids));
   }
 }
 

@@ -4,6 +4,7 @@ export interface IStoryModuleRoot {
   allStoriesAdmin: IStoryModuleAdmin[];
   allStoriesAdminLoading: boolean;
   getAllStoryModule: (fn: IStoryModule, user_id: number) => any;
+  deleteStory: (fn: IStoryModule) => any;
 }
 
 export interface IStoryModuleAdmin {

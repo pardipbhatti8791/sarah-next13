@@ -1,13 +1,11 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useStore } from "@/store/store";
 import { ICreateStoryTheme } from "@/store/storyTheme/storyThemeInterface";
 import { themeOptions } from "@/lib/utils";
-import { useSession } from "next-auth/react";
-import { title } from "process";
 
 const StoryThemeSchema = Yup.object({
   title: Yup.string().required("*Title is required field"),
@@ -22,6 +20,7 @@ const StoryThemeSchema = Yup.object({
 
 export const CreateStoryTheme = () => {
   const store = useStore((state) => state);
+  const [selectedTheme, setSelectedTheme] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -35,13 +34,15 @@ export const CreateStoryTheme = () => {
       const nValues: ICreateStoryTheme = rest;
       nValues.themeType = themeType.value;
       store.createStoryTheme(nValues);
-      resetForm({
+
+      formik.resetForm({
         values: {
           title: "",
           description: "",
           themeType: { value: "", label: "" },
         },
       });
+      setSelectedTheme(null);
     },
   });
 
@@ -84,6 +85,7 @@ export const CreateStoryTheme = () => {
               Theme Type
             </label>
             <Select
+              isClearable={true}
               options={
                 themeOptions.map((user) => {
                   return {
@@ -94,7 +96,9 @@ export const CreateStoryTheme = () => {
               }
               onChange={(value: any) => {
                 formik.setFieldValue("themeType", value);
+                setSelectedTheme(value);
               }}
+              value={selectedTheme}
             />
 
             <div className="text-red-600">

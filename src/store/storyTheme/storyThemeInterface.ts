@@ -27,13 +27,13 @@ export interface IStoryTheme {
   title: string;
   description: string;
   status: number;
-  themeType: string;
+  themeType: { value: ""; label: "" };
 }
 
 export interface ICreateStoryTheme {
   title: string;
   description: string;
-  themeType: string;
+  themeType: { value: ""; label: "" };
 }
 
 export type updateStoryTheme = Partial<IStoryTheme>;
