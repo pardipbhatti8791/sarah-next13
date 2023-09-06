@@ -2,7 +2,7 @@
 const nextConfig = {
   env: {
     NEXTAUTH_SECRET: "hellothere12345",
-    NEXTAUTH_URL: "https://talezapp.gpcoders.dev",
+    NEXTAUTH_URL: "https://talez-app.gpcoders.dev",
   },
   // env: {
   //   NEXTAUTH_SECRET: "hellothere12345",
