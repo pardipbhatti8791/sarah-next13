@@ -94,12 +94,12 @@ const EditCreateCharacterBackground = (props: any) => {
       nValues.story_theme_id = story_theme_id.value;
       nValues.type = type.value;
       try {
+        //@ts-ignore
         await store.updateStoryCharacter(
           { id: +props.params.id },
           nValues,
           router
         );
-        console.log(nValues);
         resetForm();
       } catch (error) {
         console.log("error", error);

@@ -1,8 +1,5 @@
 import axiosInstance, { URI } from "@/lib/service";
-import {
-  DeleteUserManyRequest,
-  updateUserAdmin,
-} from "@/store/users/usersInterface";
+import { updateUserAdmin } from "@/store/users/usersInterface";
 
 export interface IUsersAdmin {
   id?: number;

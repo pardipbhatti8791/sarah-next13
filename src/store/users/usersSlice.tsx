@@ -98,7 +98,6 @@ export const allUsersSlice: StateCreator<IUserRoot, [], [], IUserRoot> = (
   deleteManyUserLoading: false,
   deleteUserMany: async (ids) => {
     const tid = toast.loading("Deleting...");
-
     try {
       await UsersService.deleteUserMany(ids);
       toast.success("Deleted Successfully", { id: tid });

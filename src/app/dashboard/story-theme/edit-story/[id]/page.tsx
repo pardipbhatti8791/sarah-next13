@@ -55,6 +55,7 @@ const EditThemeStory = (props: any) => {
       nValues.status = status;
 
       try {
+        //@ts-ignore
         await store.updateStoryTheme({ id: +props.params.id }, nValues, router);
       } catch (error) {
         console.error("Error updating story theme:", error);

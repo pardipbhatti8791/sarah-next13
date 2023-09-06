@@ -25,7 +25,6 @@ const Users: UserCompnentI = ({ loading }, props: any) => {
       setSelectedUsers([...selectedUsers, userId]);
     }
   };
-  console.log(selectedUsers);
 
   useEffect(() => {
     const UsersData = async () => {
