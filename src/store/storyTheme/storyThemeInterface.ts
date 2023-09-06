@@ -1,8 +1,19 @@
+import { IEditStory } from "@/services/StoryThemesService";
+
 export type getStoryParams = { page: number; limit: number };
 export interface IStoryThemeInterface {
   storyThemeLoading: boolean;
-  getStoryThemes: ({ page, limit }: getStoryParams) => void;
-  storyThemes: IStoryThemes;
+  storyThemes: (fn: IStoryThemes) => any;
+  getStoryThemes: ({ page, limit }: getStoryParams) => any;
+  createStoryThemeLoading: boolean;
+  createStoryTheme: (fn: ICreateStoryTheme) => void;
+  updateStoryTheme: (
+    fn: IEditStory,
+    data: updateStoryTheme,
+    redirect: any,
+    id: number
+  ) => any;
+  deleteStoryTheme: (fn: IEditStory) => any;
 }
 
 export interface IStoryThemes {
@@ -16,5 +27,13 @@ export interface IStoryTheme {
   title: string;
   description: string;
   status: number;
-  themeType: string;
+  themeType: { value: ""; label: "" };
 }
+
+export interface ICreateStoryTheme {
+  title: string;
+  description: string;
+  themeType: { value: ""; label: "" };
+}
+
+export type updateStoryTheme = Partial<IStoryTheme>;

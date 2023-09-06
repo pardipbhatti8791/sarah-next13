@@ -203,7 +203,7 @@ const Login = (props: any) => {
                           formik.setFieldValue("email", e.target.value)
                         }
                       />
-                      <div className="text-danger mt-1">
+                      <div className="mt-1 text-danger">
                         {formik.errors?.email}
                       </div>
                       <span className="absolute right-4 top-4">
@@ -240,7 +240,7 @@ const Login = (props: any) => {
                           formik.setFieldValue("password", e.target.value)
                         }
                       />
-                      <div className="text-danger mt-1">
+                      <div className="mt-1 text-danger">
                         {formik.errors?.password}
                       </div>
 

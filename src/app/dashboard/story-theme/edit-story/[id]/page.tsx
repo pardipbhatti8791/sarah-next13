@@ -1,11 +1,17 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useStore } from "@/store/store";
-import { ICreateStoryTheme } from "@/store/storyTheme/storyThemeInterface";
+import {
+  ICreateStoryTheme,
+  IStoryTheme,
+} from "@/store/storyTheme/storyThemeInterface";
 import { themeOptions } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
 
 const StoryThemeSchema = Yup.object({
   title: Yup.string().required("*Title is required field"),
@@ -18,41 +24,59 @@ const StoryThemeSchema = Yup.object({
     .required("*Theme type is required"),
 });
 
-export const CreateStoryTheme = () => {
+const EditThemeStory = (props: any) => {
+  const router = useRouter();
+  const { status, data } = useSession();
   const store = useStore((state) => state);
-  const [selectedTheme, setSelectedTheme] = useState(null);
+  const [storyTheme, setStoryTheme] = useState<IStoryTheme[]>([]);
 
+  useEffect(() => {
+    const titleData = store.storyThemes.rows.filter(
+      (titleDat) => titleDat.id === +props.params.id
+    );
+    setStoryTheme(titleData.length > 0 ? titleData : []);
+  }, [store.storyThemes]);
   const formik = useFormik({
     initialValues: {
-      title: "",
-      description: "",
-      themeType: { value: "", label: "" },
+      status: storyTheme.length > 0 ? storyTheme[0].status : "",
+      title: storyTheme.length > 0 ? storyTheme[0].title : "",
+      description: storyTheme.length > 0 ? storyTheme[0].description : "",
+      themeType: {
+        label: storyTheme.length > 0 ? storyTheme[0].themeType : "",
+        value: storyTheme.length > 0 ? storyTheme[0].themeType : "",
+      },
     },
     validationSchema: StoryThemeSchema,
-    onSubmit: (values: any, { resetForm }) => {
-      const { themeType, ...rest } = values;
-      const nValues: ICreateStoryTheme = rest;
+    enableReinitialize: true,
+    onSubmit: async (values: any) => {
+      const { themeType, status, ...rest } = values;
+      const nValues: IStoryTheme = rest;
       nValues.themeType = themeType.value;
-      store.createStoryTheme(nValues);
+      nValues.status = status;
 
-      formik.resetForm({
-        values: {
-          title: "",
-          description: "",
-          themeType: { value: "", label: "" },
-        },
-      });
-      setSelectedTheme(null);
+      try {
+        //@ts-ignore
+        await store.updateStoryTheme({ id: +props.params.id }, nValues, router);
+      } catch (error) {
+        console.error("Error updating story theme:", error);
+      }
     },
   });
 
   return (
-    <div className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div
+      style={{
+        width: "40%",
+        alignSelf: "center",
+        marginTop: 18,
+      }}
+      className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark"
+    >
       <form onSubmit={formik.handleSubmit}>
         <div className="p-6.5">
           <div className="mb-4.5">
             <label className="mb-2.5 block text-black dark:text-white">
-              Title
+              Edit Title
             </label>
             <input
               type="title"
@@ -66,7 +90,7 @@ export const CreateStoryTheme = () => {
           <div className="mb-4.5">
             <div>
               <label className="block mb-3 text-sm font-medium text-black dark:text-white">
-                Description
+                Edit Description
               </label>
               <textarea
                 rows={6}
@@ -82,25 +106,15 @@ export const CreateStoryTheme = () => {
           </div>
           <div className="mb-4.5">
             <label className="block mb-3 text-sm font-medium text-black dark:text-white">
-              Theme Type
+              Edit Theme Type
             </label>
             <Select
-              isClearable={true}
-              options={
-                themeOptions.map((user) => {
-                  return {
-                    value: user.value,
-                    label: user.label,
-                  };
-                }) || []
-              }
+              options={themeOptions}
               onChange={(value: any) => {
                 formik.setFieldValue("themeType", value);
-                setSelectedTheme(value);
               }}
-              value={selectedTheme}
+              value={formik.values.themeType}
             />
-
             <div className="text-red-600">
               {formik.touched.themeType?.value &&
               formik.errors.themeType?.value ? (
@@ -113,10 +127,12 @@ export const CreateStoryTheme = () => {
             type="submit"
             className="flex justify-center w-full p-3 mt-10 font-medium rounded bg-primary text-gray"
           >
-            Create
+            Update
           </button>
         </div>
       </form>
     </div>
   );
 };
+
+export default EditThemeStory;

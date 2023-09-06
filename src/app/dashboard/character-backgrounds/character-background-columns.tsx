@@ -1,25 +1,18 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { IStoryTheme } from "@/store/storyTheme/storyThemeInterface";
 import { useStore } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { CreateCharacterBackground } from "@/components/c-character-backgrounds/CreateCharacterBackground";
+import { IStoryCharacter } from "@/store/storyCharacter/storyCharacterInterface";
 
-export const useStoryThemesColumns = () => {
+export const useStoryCharacterColumns = () => {
   const store = useStore((state) => state);
   const router = useRouter();
   const { status, data } = useSession();
-  const [titleOptions, setTitleOptions] = useState([]);
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      store.getStoryThemes({ page: 1, limit: 10 });
-    }
-  }, [status]);
-
-  return React.useMemo<ColumnDef<IStoryTheme>[]>(
+  return React.useMemo<ColumnDef<IStoryCharacter>[]>(
     () => [
       {
         id: "title",
@@ -28,7 +21,6 @@ export const useStoryThemesColumns = () => {
         cell: (info) => info.getValue(),
         footer: (props) => props.column.id,
       },
-
       {
         accessorFn: (row) => row.description,
         id: "description",
@@ -36,13 +28,7 @@ export const useStoryThemesColumns = () => {
         header: () => <span>Description</span>,
         footer: (props) => props.column.id,
       },
-      {
-        accessorFn: (row) => row.status,
-        id: "status",
-        cell: (info) => info.getValue(),
-        header: () => <span>Status</span>,
-        footer: (props) => props.column.id,
-      },
+
       {
         header: () => <span>Actions</span>,
         id: "actions",
@@ -51,7 +37,7 @@ export const useStoryThemesColumns = () => {
             <div
               onClick={() => {
                 router.push(
-                  `/dashboard/story-theme/edit-story/${row.row.original.id}`
+                  `/dashboard/character-backgrounds/edit-character/${row.row.original.id}`
                 );
               }}
             >
@@ -73,7 +59,7 @@ export const useStoryThemesColumns = () => {
             </div>
             <div
               onClick={() =>
-                store.deleteStoryTheme({ id: row.cell.row.original.id })
+                store.deleteCharacter({ id: row.cell.row.original.id })
               }
             >
               <svg
@@ -99,7 +85,6 @@ export const useStoryThemesColumns = () => {
         ),
       },
     ],
-
     []
   );
 };

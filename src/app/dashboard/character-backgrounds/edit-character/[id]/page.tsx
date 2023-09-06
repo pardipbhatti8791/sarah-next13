@@ -4,34 +4,38 @@ import Select from "react-select";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useStore } from "@/store/store";
-import { ICreateStoryCharacter } from "@/store/storyCharacter/storyCharacterInterface";
-import { toast } from "react-hot-toast";
+import { IStoryCharacter } from "@/store/storyCharacter/storyCharacterInterface";
 import StoryCharacterService from "@/services/StoryCharacterService";
 import StoryThemesService from "@/services/StoryThemesService";
+import { useRouter } from "next/navigation";
 
 const StoryCharacterSchema = Yup.object({
   title: Yup.string().required("* Title is required field"),
   description: Yup.string().required("*Description is required field"),
   attachment_id: Yup.mixed().required("*Attachment is required"),
-  story_theme_id: Yup.object()
+  story_theme: Yup.object()
     .shape({
       value: Yup.string().required("*Story theme is required field"),
       label: Yup.string().required("*Story theme is required field"),
     })
-    .required("*Theme type is required field"),
+    .required("*Story theme is required field"),
   type: Yup.object()
     .shape({
-      value: Yup.string().required("*Character or Background is required"),
-      label: Yup.string().required("*Character or Background is required"),
+      value: Yup.string().required("*Type is required"),
+      label: Yup.string().required("*Type is required"),
     })
-    .required("*Character or Background is required"),
+    .required("*Type is required"),
 });
 
-export const CreateCharacterBackground = (props: any) => {
+const EditCreateCharacterBackground = (props: any) => {
   const [attachmentId, setAttachmentId] = useState<number | null>(null);
-
-  const [themeOption, setThemeOption] = useState([]);
+  const router = useRouter();
   const store = useStore((state) => state);
+  const [themeOption, setThemeOption] = useState([]);
+
+  const InitialData = store.storyCharacters.rows.filter(
+    (items) => items.id === +props.params.id
+  );
 
   const type = [
     {
@@ -62,44 +66,60 @@ export const CreateCharacterBackground = (props: any) => {
           value: items.id,
           label: items.title,
         })) || [];
-
       setThemeOption(StoryThemeData);
     });
   }, []);
 
   const formik = useFormik({
     initialValues: {
-      title: "",
-      description: "",
-      type: { value: "", label: "" },
-      attachment_id: 0,
-      story_theme_id: { value: 0, label: "" },
+      title: InitialData[0]?.title || "",
+      description: InitialData[0]?.description || "",
+      story_theme_id: {
+        value: InitialData[0]?.story_theme_id || 0,
+        label: InitialData[0]?.story_theme_id || "",
+      },
+
+      type: {
+        value: InitialData[0]?.type || 0,
+        label: InitialData[0]?.type || "",
+      },
+      attachment_id: InitialData[0]?.attachment_id || 0,
     },
+
     validationSchema: StoryCharacterSchema,
 
     onSubmit: async (values: any, { resetForm }) => {
       const { story_theme_id, type, ...rest } = values;
-
+      const nValues: IStoryCharacter = rest;
+      nValues.story_theme_id = story_theme_id.value;
+      nValues.type = type.value;
       try {
-        const nValues: ICreateStoryCharacter = rest;
-        nValues.story_theme_id = story_theme_id.value;
-        nValues.type = type.value;
-
-        store.createStoryCharacter(nValues);
+        //@ts-ignore
+        await store.updateStoryCharacter(
+          { id: +props.params.id },
+          nValues,
+          router
+        );
         resetForm();
       } catch (error) {
-        toast.error("Error");
+        console.log("error", error);
       }
     },
   });
-
   return (
-    <div className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div
+      style={{
+        width: "40%",
+        alignSelf: "center",
+        marginTop: 18,
+      }}
+      className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark"
+    >
       <form onSubmit={formik.handleSubmit}>
         <div className="p-6.5">
           <div className="mb-4.5">
             <label className="block mb-3 text-sm font-medium text-black dark:text-white">
-              Character or Background Type
+              Change Character or Background Type
             </label>
             <Select
               options={type}
@@ -117,7 +137,7 @@ export const CreateCharacterBackground = (props: any) => {
 
           <div className="mb-4.5">
             <label className="mb-2.5 block text-black dark:text-white">
-              Title
+              Edit Title
             </label>
             <input
               type="title"
@@ -131,7 +151,7 @@ export const CreateCharacterBackground = (props: any) => {
           <div className="mb-4.5">
             <div>
               <label className="block mb-3 text-sm font-medium text-black dark:text-white">
-                Description
+                Edit Description
               </label>
               <textarea
                 rows={6}
@@ -148,7 +168,7 @@ export const CreateCharacterBackground = (props: any) => {
 
           <div className="mb-4.5">
             <label className="block mb-3 text-sm font-medium text-black dark:text-white">
-              Attach file
+              Change Attachment file
             </label>
             <input
               type="file"
@@ -159,9 +179,8 @@ export const CreateCharacterBackground = (props: any) => {
           </div>
           <div className="mb-4.5">
             <label className="block mb-3 text-sm font-medium text-black dark:text-white">
-              Story Theme
+              Edit Theme Type
             </label>
-
             <Select
               options={themeOption}
               value={formik.values.story_theme_id}
@@ -181,10 +200,12 @@ export const CreateCharacterBackground = (props: any) => {
             className="flex justify-center w-full p-3 mt-10 font-medium rounded bg-primary text-gray"
             type="submit"
           >
-            Create
+            Update
           </button>
         </div>
       </form>
     </div>
   );
 };
+
+export default EditCreateCharacterBackground;

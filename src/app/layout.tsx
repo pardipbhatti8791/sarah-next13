@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { ToastContainer } from "@/hoc/ToastContainerProvder";
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "MyTalez",
   description: "",
 };
 

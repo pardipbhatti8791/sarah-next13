@@ -10,17 +10,18 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "../button";
 import { getStoryParams } from "@/store/storyTheme/storyThemeInterface";
+import { getCharacterParams } from "@/store/storyCharacter/storyCharacterInterface";
 
 interface IDataProps<T, C> {
   data: T;
-  getData: ({ page }: getStoryParams) => void;
+  getData: ({ page }: getCharacterParams) => void;
   loading: boolean;
   columnsData: C;
 }
 
-type CTableCompnentI<T = any, C = any> = React.FC<IDataProps<T, C>>;
+type STableCompnentI<T = any, C = any> = React.FC<IDataProps<T, C>>;
 
-const CTableCompnent: CTableCompnentI = ({
+const STableCompnent: STableCompnentI = ({
   data: { rows, pageCount },
   getData,
   loading,
@@ -176,4 +177,4 @@ const CTableCompnent: CTableCompnentI = ({
   );
 };
 
-export default CTableCompnent;
+export default STableCompnent;
