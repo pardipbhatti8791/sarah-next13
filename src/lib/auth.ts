@@ -15,7 +15,7 @@ export const authOptions: NextAuthOptions = {
       name: "credentials",
       async authorize(credentials, _) {
         try {
-          const response = await axios.post(BASE_URL + URI.auth, {
+          const response = await axios.post(BASE_URL + URI.auth.signin, {
             email: credentials!.email,
             password: credentials!.password,
           });
@@ -24,16 +24,18 @@ export const authOptions: NextAuthOptions = {
 
           setToken(data.access_token);
           return {
-            id: data.user.email,
-            name: data.user.first_name + " " + data.user.last_name,
-            email: data.user.email,
-            username: data.user.email,
+            id: data.email,
+            name: data.first_name + " " + data.last_name,
+            email: data.email,
+            username: data.email,
             token: data.access_token,
+            ...data,
           };
         } catch (error: any) {
           throw new Error(error.response.data.message);
         }
       },
+      credentials: undefined,
     }),
   ],
   callbacks: {

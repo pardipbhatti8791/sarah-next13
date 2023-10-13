@@ -52,18 +52,20 @@ axiosInstance.interceptors?.response.use(
 export default axiosInstance;
 
 export const URI = {
-  auth: "/signin",
+  auth: {
+    signin:"/signin"
+  },
   storyThemes: {
     updateStoryTheme: (id: number) => `/story-theme/edit/${id}`,
     getStoryThemes: ({ page, limit }: getStoryParams) =>
-      `/story-themes/?page=${page}&limit=${limit}`,
+      `/story-theme/all/?limit=${limit}&page=${page}`,
   },
   createStoryTheme: "/story-theme/create",
-  deleteStoryTheme: (id: number) => `/delete-story-themes/${id}`,
+  deleteStoryTheme: (id: number) => `/story-theme/${id}`,
 
   StoryCharacter: {
     getStoryCharacter: ({ page, limit }: getCharacterParams) =>
-      `/story-characters?page=${page}&limit=${limit}`,
+      `/story-characters/?limit=${limit}&page=${page}`,
     createBackground: "/characters-background/create",
     uploadAttachment: "/media/upload",
     getAllAttachment: ({ type, page }: getUploadParams) =>

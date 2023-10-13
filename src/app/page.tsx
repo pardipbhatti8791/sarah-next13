@@ -41,7 +41,7 @@ const Login = (props: any) => {
       const toastId = toast.loading("Verifying...");
       setTid(toastId);
       signIn("credentials", {
-        redirect: false,
+        redirect: true,
         email: values.email,
         password: values.password,
       });

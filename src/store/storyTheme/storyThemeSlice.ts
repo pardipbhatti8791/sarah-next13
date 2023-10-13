@@ -39,11 +39,16 @@ export const storyThemeSlice: StateCreator<
   },
 
   createStoryThemeLoading: false,
+
   createStoryTheme: async (fn) => {
+    const { title, ...rest } = fn;
+    const slug = title.toLowerCase().replace(/\s+/g, "-");
+    const updatedFn = { ...fn, slug };
+
     const tid = toast.loading("Creating new Story...");
     set(() => ({ createStoryThemeLoading: true }));
     try {
-      await StoryThemesService.createStoryTheme(fn);
+      await StoryThemesService.createStoryTheme(updatedFn);
       set(() => ({ createStoryThemeLoading: false }));
       useStore.getState().getStoryThemes({ page: 1, limit: 10 });
       toast.dismiss(tid);
@@ -54,6 +59,7 @@ export const storyThemeSlice: StateCreator<
       set(() => ({ createStoryThemeLoading: false }));
     }
   },
+
   updateStoryTheme: async ({ id }, data, redirect) => {
     const tid = toast.loading("Updating....");
     try {
