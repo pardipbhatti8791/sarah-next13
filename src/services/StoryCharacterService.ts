@@ -21,11 +21,9 @@ class StoryCharacterService {
     return axiosInstance.post(URI.StoryCharacter.createBackground, data);
   }
 
-
-  uploadAttachment  (data: ICharacterStory)  {
-      return axiosInstance.post(URI.StoryCharacter.uploadAttachment, data);
-    }
-
+  uploadAttachment(data: ICharacterStory) {
+    return axiosInstance.post(URI.StoryCharacter.uploadAttachment, data);
+  }
 
   getAttachments({ page, type }: getUploadParams) {
     return axiosInstance.get(

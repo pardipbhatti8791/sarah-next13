@@ -53,7 +53,7 @@ export default axiosInstance;
 
 export const URI = {
   auth: {
-    signin:"/signin"
+    signin: "/signin",
   },
   storyThemes: {
     updateStoryTheme: (id: string) => `/story-theme/${id}`,

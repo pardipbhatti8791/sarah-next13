@@ -1,6 +1,8 @@
 import { StateCreator } from "zustand";
 import { ICharacterInterface } from "./storyCharacterInterface";
-import StoryCharacterService, { ICharacterStory } from "@/services/StoryCharacterService";
+import StoryCharacterService, {
+  ICharacterStory,
+} from "@/services/StoryCharacterService";
 import { toast } from "react-hot-toast";
 import { useStore } from "../store";
 import { redirect } from "next/dist/server/api-utils";
@@ -95,22 +97,7 @@ export const storyCharacterSlice: StateCreator<
   },
 
   uploadAttachmentLoading: false,
-  // createUploadAttachment: async (fn) => {
-  //   set(() => ({ uploadAttachmentLoading: true }));
-  //   try {
-  //     await StoryCharacterService.uploadAttachment(fn);
-
-  //     set(() => ({ uploadAttachmentLoading: false }));
-  //   } catch (error: any) {
-  //     toast.error(JSON.stringify(error.res));
-  //   }
-  //   set(() => ({ uploadAttachmentLoading: false }));
-  // },
-
-
-
-   createUploadAttachment : async (fn) => {
-  
+  createUploadAttachment: async (fn) => {
     try {
       set({ uploadAttachmentLoading: true });
       await StoryCharacterService.uploadAttachment(fn);
@@ -121,8 +108,7 @@ export const storyCharacterSlice: StateCreator<
       set({ uploadAttachmentLoading: false });
     }
   },
-  
-  
+
   character: async (fn) => {
     try {
       await StoryCharacterService.character(fn);
