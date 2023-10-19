@@ -23,10 +23,9 @@ export interface IStoryThemes {
 }
 
 export interface IStoryTheme {
-  id: number;
+  id: string;
   title: string;
   description: string;
-  status: number;
   themeType: { value: ""; label: "" };
 }
 

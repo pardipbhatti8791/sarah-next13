@@ -60,18 +60,44 @@ export const storyThemeSlice: StateCreator<
     }
   },
 
-  updateStoryTheme: async ({ id }, data, redirect) => {
-    const tid = toast.loading("Updating....");
-    try {
-      await StoryThemesService.updateStoryTheme({ id }, data);
+  // updateStoryTheme: async ({ id }, data, redirect) => {
+  //   const tid = toast.loading("Updating....");
+  //   const slug = data.title?.toLowerCase().replace(/\s+/g, "-");
+  //   const updatedFn = { id, slug, data };
+  //   try {
+  //     await StoryThemesService.updateStoryTheme({...data},updatedFn);
 
+  //     toast.success("Updated Successfully!", {
+  //       id: tid,
+  //     });
+  //     redirect.push("/dashboard/story-theme");
+  //   } catch (error: any) {
+  //     if (error.response.status === 401) {
+  //       toast.error("Unauthorized request !, Signing you out!");
+  //       signOut();
+  //     } else {
+  //       toast.error(JSON.stringify(error.response.data), {
+  //         id: tid,
+  //       });
+  //     }
+  //   }
+  // },
+
+
+  updateStoryTheme: async ({id},data, redirect) => {
+    const tid = toast.loading("Updating....");
+    const slug = data.title?.toLowerCase().replace(/\s+/g, "-");
+    const updatedFn = { slug, ...data };
+    try {
+      await StoryThemesService.updateStoryTheme({id}, updatedFn);
+  
       toast.success("Updated Successfully!", {
         id: tid,
       });
       redirect.push("/dashboard/story-theme");
     } catch (error: any) {
-      if (error.response.status === 401) {
-        toast.error("Unauthorized request !, Signing you out!");
+      if (error.response && error.response.status === 401) {
+        toast.error("Unauthorized request! Signing you out!");
         signOut();
       } else {
         toast.error(JSON.stringify(error.response.data), {
@@ -80,6 +106,10 @@ export const storyThemeSlice: StateCreator<
       }
     }
   },
+  
+  
+  
+
   deleteStoryTheme: async ({ id }) => {
     set(() => ({ createStoryThemeLoading: true }));
     try {

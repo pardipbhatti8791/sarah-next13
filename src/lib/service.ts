@@ -56,7 +56,7 @@ export const URI = {
     signin:"/signin"
   },
   storyThemes: {
-    updateStoryTheme: (id: number) => `/story-theme/edit/${id}`,
+    updateStoryTheme: (id: string) => `/story-theme/${id}`,
     getStoryThemes: ({ page, limit }: getStoryParams) =>
       `/story-theme/all/?limit=${limit}&page=${page}`,
   },
@@ -67,13 +67,13 @@ export const URI = {
     getStoryCharacter: ({ page, limit }: getCharacterParams) =>
       `/story-characters/?limit=${limit}&page=${page}`,
     createBackground: "/characters-background/create",
-    uploadAttachment: "/media/upload",
+    uploadAttachment: "/upload",
     getAllAttachment: ({ type, page }: getUploadParams) =>
       `/media/${type}/${page}`,
     character: "/story-characters-mobile?id=0",
     background: "/story-backgrounds-mobile?id=1",
-    updateCharacter: (id: number) => `/story-characters/edit/${id}`,
-    deleteCharacter: (id: number) => `/delete-story-character/${id}`,
+    updateCharacter: (id: string) => `/story-characters/edit/${id}`,
+    deleteCharacter: (id: string) => `/delete-story-character/${id}`,
   },
   Users: {
     getAllUsers: "/users/all",

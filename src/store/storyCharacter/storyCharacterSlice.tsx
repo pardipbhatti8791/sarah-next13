@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
 import { ICharacterInterface } from "./storyCharacterInterface";
-import StoryCharacterService from "@/services/StoryCharacterService";
+import StoryCharacterService, { ICharacterStory } from "@/services/StoryCharacterService";
 import { toast } from "react-hot-toast";
 import { useStore } from "../store";
 import { redirect } from "next/dist/server/api-utils";
@@ -16,13 +16,13 @@ export const storyCharacterSlice: StateCreator<
   storyCharacters: {
     rows: [
       {
-        id: 0,
+        id: "0",
         title: "",
         description: "",
         storyTheme: { value: "", label: "" },
-        type: 0,
-        attachment_id: 0,
-        story_theme_id: 0,
+        type: { value: "", label: "" },
+        attachment: "",
+        story_theme_id: "",
       },
     ],
     pageCount: 1,
@@ -95,18 +95,34 @@ export const storyCharacterSlice: StateCreator<
   },
 
   uploadAttachmentLoading: false,
-  createUploadAttachment: async (fn) => {
-    set(() => ({ uploadAttachmentLoading: true }));
+  // createUploadAttachment: async (fn) => {
+  //   set(() => ({ uploadAttachmentLoading: true }));
+  //   try {
+  //     await StoryCharacterService.uploadAttachment(fn);
+
+  //     set(() => ({ uploadAttachmentLoading: false }));
+  //   } catch (error: any) {
+  //     toast.error(JSON.stringify(error.res));
+  //   }
+  //   set(() => ({ uploadAttachmentLoading: false }));
+  // },
+
+
+
+   createUploadAttachment : async (fn) => {
+  
     try {
+      set({ uploadAttachmentLoading: true });
       await StoryCharacterService.uploadAttachment(fn);
-
-      set(() => ({ uploadAttachmentLoading: false }));
-    } catch (error: any) {
-      toast.error(JSON.stringify(error.res));
+      set({ uploadAttachmentLoading: false });
+    } catch (error) {
+      console.error("Error in uploading attachment: ", error);
+      toast.error("Error in uploading attachment");
+      set({ uploadAttachmentLoading: false });
     }
-    set(() => ({ uploadAttachmentLoading: false }));
   },
-
+  
+  
   character: async (fn) => {
     try {
       await StoryCharacterService.character(fn);

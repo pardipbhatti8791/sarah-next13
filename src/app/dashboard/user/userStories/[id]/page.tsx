@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 "use client";
 import StoriesModuleService from "@/services/StoriesModuleService";
 import { useStore } from "@/store/store";

@@ -29,34 +29,35 @@ const EditThemeStory = (props: any) => {
   const { status, data } = useSession();
   const store = useStore((state) => state);
   const [storyTheme, setStoryTheme] = useState<IStoryTheme[]>([]);
-
   useEffect(() => {
-    const titleData = store.storyThemes.rows.filter(
-      (titleDat) => titleDat.id === +props.params.id
-    );
-    setStoryTheme(titleData.length > 0 ? titleData : []);
+    const priviousData = store.storyThemes.rows.filter((line: any) => {
+      return line.id === props.params.id;
+    });
+    setStoryTheme(priviousData);
   }, [store.storyThemes]);
+
   const formik = useFormik({
     initialValues: {
-      status: storyTheme.length > 0 ? storyTheme[0].status : "",
       title: storyTheme.length > 0 ? storyTheme[0].title : "",
       description: storyTheme.length > 0 ? storyTheme[0].description : "",
-      themeType: {
-        label: storyTheme.length > 0 ? storyTheme[0].themeType : "",
-        value: storyTheme.length > 0 ? storyTheme[0].themeType : "",
-      },
+      themeType:
+        storyTheme.length > 0
+          ? {
+              label: storyTheme[0].themeType,
+              value: storyTheme[0].themeType,
+            }
+          : { label: "", value: "" },
     },
     validationSchema: StoryThemeSchema,
     enableReinitialize: true,
     onSubmit: async (values: any) => {
-      const { themeType, status, ...rest } = values;
-      const nValues: IStoryTheme = rest;
+      const { themeType, ...rest } = values;
+      const nValues = { ...rest };
       nValues.themeType = themeType.value;
-      nValues.status = status;
 
       try {
         //@ts-ignore
-        await store.updateStoryTheme({ id: +props.params.id }, nValues, router);
+        await store.updateStoryTheme({ id:props.params.id }, nValues, router);
       } catch (error) {
         console.error("Error updating story theme:", error);
       }

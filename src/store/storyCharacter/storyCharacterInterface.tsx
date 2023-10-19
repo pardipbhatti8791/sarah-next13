@@ -15,19 +15,19 @@ export interface ICharacterInterface {
     fn: ICharacterStory,
     data: updateCharacterTheme,
     redirect: any,
-    id: number
+    id: string
   ) => any;
 
   getAllAttachment: ({ page, type }: getUploadParams) => any;
   uploadAttachmentLoading: boolean;
-  createUploadAttachment: (fn: IAttachment) => void;
+  createUploadAttachment: (fn: IAttachment) => any;
   character: (fn: IAttachment) => void;
   background: (fn: IAttachment) => void;
   deleteCharacter: (fn: ICharacterStory) => any;
 }
 
 export default interface IAttachment {
-  id: number;
+  id: string;
 }
 
 export interface IStoryCharacters {
@@ -37,20 +37,20 @@ export interface IStoryCharacters {
 }
 
 export interface IStoryCharacter {
-  id: number;
-  type: number;
+  id: string;
+  type: { value: string; label: string };
   title: string;
   description: string;
-  attachment_id: number;
-  story_theme_id: number;
+  attachment: string;
+  story_theme_id: string;
   storyTheme: { value: string; label: string };
 }
 export interface ICreateStoryCharacter {
-  type: number;
+  type: { value: string; label: string };
   title: string;
   description: string;
-  attachment_id: number;
-  story_theme_id: number;
+  attachment: string;
+  story_theme_id: string;
   storyTheme: { value: string; label: string };
 }
 export type updateCharacterTheme = Partial<IStoryCharacter>;

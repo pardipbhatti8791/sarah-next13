@@ -27,6 +27,7 @@ export const CreateStoryTheme = () => {
       title: "",
       description: "",
       themeType: { value: "", label: "" },
+      
     },
     validationSchema: StoryThemeSchema,
     onSubmit: (values: any, { resetForm }) => {
