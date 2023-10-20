@@ -22,7 +22,7 @@ export const storyCharacterSlice: StateCreator<
         title: "",
         description: "",
         storyTheme: { value: "", label: "" },
-        type: { value: "", label: "" },
+        type: "",
         attachment: "",
         story_theme_id: "",
       },

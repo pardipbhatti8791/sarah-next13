@@ -38,7 +38,7 @@ export interface IStoryCharacters {
 
 export interface IStoryCharacter {
   id: string;
-  type: { value: string; label: string };
+  type: string;
   title: string;
   description: string;
   attachment: string;
@@ -46,7 +46,7 @@ export interface IStoryCharacter {
   storyTheme: { value: string; label: string };
 }
 export interface ICreateStoryCharacter {
-  type: { value: string; label: string };
+  type: string;
   title: string;
   description: string;
   attachment: string;

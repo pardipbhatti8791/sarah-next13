@@ -12,7 +12,7 @@ import StoryThemesService from "@/services/StoryThemesService";
 const StoryCharacterSchema = Yup.object({
   title: Yup.string().required("* Title is required field"),
   description: Yup.string().required("*Description is required field"),
-  attachment: Yup.mixed().required("*Attachment is required"),
+  // attachment: Yup.mixed().required("*Attachment is required"),
   story_theme_id: Yup.object()
     .shape({
       value: Yup.string().required("*Story theme is required field"),
@@ -33,31 +33,25 @@ export const CreateCharacterBackground = (props: any) => {
   const [themeOption, setThemeOption] = useState([]);
   const store = useStore((state) => state);
 
-  enum Type {
-    Character = "0",
-    Background = "1",
+  enum Types {
+    character = "character",
+    background = "background",
   }
 
-  const typeOptions = Object.keys(Type).map((key) => ({
+  const typeOptions = Object.keys(Types).map((key) => ({
     label: key,
-    value: Type[key],
+    value: Types[key],
   }));
 
-  let isFormSubmitted = false;
+  const handleAttachmentChange = async (event: any) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const formData = new FormData();
+      formData.append("file", event.target.files[0]);
 
-  const handleAttachmentChange = async (formData: FormData) => {
-    if (formData) {
-      try {
-        const response = await StoryCharacterService.uploadAttachment(formData);
-        const attachmentId = String(response.data.id);
+      const response = await StoryCharacterService.uploadAttachment(formData);
+      setAttachmentId (response.data.url);
+      formik.setFieldValue("attachment", response.data.url);
 
-        setAttachmentId(attachmentId);
-
-        formik.setFieldValue("attachment", attachmentId);
-        console.log("images", setAttachmentId(attachmentId));
-      } catch (error) {
-        console.error("Error in uploading attachment: ", error);
-      }
     }
   };
 
@@ -77,7 +71,7 @@ export const CreateCharacterBackground = (props: any) => {
     initialValues: {
       title: "",
       description: "",
-      type: Type.Character,
+      type: Types,
       attachment: "",
       story_theme_id: { value: "", label: "" },
     },
@@ -88,18 +82,11 @@ export const CreateCharacterBackground = (props: any) => {
       try {
         const nValues: ICreateStoryCharacter = rest;
         nValues.story_theme_id = story_theme_id.value;
-        nValues.type = type;
+        nValues.type = type.value;
         await store.createStoryCharacter(nValues);
-        isFormSubmitted = true;
         resetForm();
       } catch (error) {
         toast.error("Error");
-      }
-
-      if (isFormSubmitted) {
-        const formData = new FormData();
-        formData.append("file", values.formData[0]);
-        await handleAttachmentChange(formData);
       }
     },
   });
@@ -168,7 +155,7 @@ export const CreateCharacterBackground = (props: any) => {
               className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter dark:file:bg-white/30 dark:file:text-white file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:focus:border-primary"
               onChange={handleAttachmentChange}
             />
-            <div className="text-red-400">{formik?.errors?.attachment}</div>
+            {/* <div className="text-red-400">{formik?.errors?.attachment}</div> */}
           </div>
           <div className="mb-4.5">
             <label className="block mb-3 text-sm font-medium text-black dark:text-white">

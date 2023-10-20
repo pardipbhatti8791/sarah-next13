@@ -32,30 +32,36 @@ const EditCreateCharacterBackground = (props: any) => {
   const router = useRouter();
   const store = useStore((state) => state);
   const [themeOption, setThemeOption] = useState([]);
+  const [storyCharacter,setStoryCharacter] = useState<IStoryCharacter[]>([])
 
-  const InitialData = store.storyCharacters.rows.filter(
-    (items) => items.id === +props.params.id
-  );
 
-  const type = [
-    {
-      label: "Character",
-      value: 0,
-    },
-    {
-      label: "Background",
-      value: 1,
-    },
-  ];
+  useEffect(() => {
+    const priviousData = store.storyCharacters.rows.filter((line: any) => {
+      return line.id === props.params.id;
+    });
+    setStoryCharacter(priviousData);
+  }, [store.storyCharacters]);
+  console.log("messages",storyCharacter)
 
-  const handleAttachmentChange = async (event) => {
+  
+
+  enum Types {
+    character = "character",
+    background = "background",
+  }
+  const typeOptions = Object.keys(Types).map((key) => ({
+    label: key,
+    value: Types[key],
+  }));
+  const handleAttachmentChange = async (event: any) => {
     if (event.target.files && event.target.files.length > 0) {
       const formData = new FormData();
       formData.append("file", event.target.files[0]);
 
       const response = await StoryCharacterService.uploadAttachment(formData);
-      setAttachmentId(response.data.id);
-      formik.setFieldValue("attachment_id", response.data.id);
+      setAttachmentId (response.data.url);
+      formik.setFieldValue("attachment", response.data.url);
+
     }
   };
 
@@ -69,21 +75,25 @@ const EditCreateCharacterBackground = (props: any) => {
       setThemeOption(StoryThemeData);
     });
   }, []);
-
+  
   const formik = useFormik({
     initialValues: {
-      title: InitialData[0]?.title || "",
-      description: InitialData[0]?.description || "",
-      story_theme_id: {
-        value: InitialData[0]?.story_theme_id || 0,
-        label: InitialData[0]?.story_theme_id || "",
-      },
+      title: storyCharacter.length > 0 ? storyCharacter[0].title :"",
+      description: storyCharacter.length > 0 ? storyCharacter[0].description : "",
+      story_theme_id: 
+      storyCharacter.length >0 
+      ? {
+        value:storyCharacter[0].story_theme_id ,
+        label: storyCharacter[0].story_theme_id,
+      } :{label :"", value:""},
 
-      type: {
-        value: InitialData[0]?.type || 0,
-        label: InitialData[0]?.type || "",
-      },
-      attachment_id: InitialData[0]?.attachment_id || 0,
+      type: 
+          storyCharacter.length > 0
+          ? {
+        value: storyCharacter[0].type,
+        label: storyCharacter[0].type,
+      } : {label :"",value:""},
+      attachment: storyCharacter.length > 0 ?storyCharacter[0].attachment :"",
     },
 
     validationSchema: StoryCharacterSchema,
@@ -96,7 +106,7 @@ const EditCreateCharacterBackground = (props: any) => {
       try {
         //@ts-ignore
         await store.updateStoryCharacter(
-          { id: +props.params.id },
+          { id:props.params.id },
           nValues,
           router
         );
@@ -116,13 +126,14 @@ const EditCreateCharacterBackground = (props: any) => {
       className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark"
     >
       <form onSubmit={formik.handleSubmit}>
+        {JSON.stringify(storyCharacter)}
         <div className="p-6.5">
           <div className="mb-4.5">
             <label className="block mb-3 text-sm font-medium text-black dark:text-white">
               Change Character or Background Type
             </label>
             <Select
-              options={type}
+              options={typeOptions}
               value={formik.values.type}
               onChange={(value: any) => {
                 formik.setFieldValue("type", value);
