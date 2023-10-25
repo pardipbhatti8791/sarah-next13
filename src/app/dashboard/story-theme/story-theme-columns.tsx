@@ -5,7 +5,7 @@ import { IStoryTheme } from "@/store/storyTheme/storyThemeInterface";
 import { useStore } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { CreateCharacterBackground } from "@/components/c-character-backgrounds/CreateCharacterBackground";
+import { CreateCharacterBackground } from "@/components/c-character-backgrounds/character-backgrounds";
 
 export const useStoryThemesColumns = () => {
   const store = useStore((state) => state);

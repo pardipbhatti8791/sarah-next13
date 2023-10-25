@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 "use client";
 import UsersService from "@/services/UsersService";
 import { useStore } from "@/store/store";
@@ -179,6 +180,7 @@ const Users: UserCompnentI = ({ loading }, props: any) => {
                   <td className="px-4 py-5 dark:border-strokedark xl:pl-0 xl:pr-0 xl:pt-0">
                     {users.map((items: any) => {
                       return (
+                        // eslint-disable-next-line react/jsx-key
                         <ul className="border-b">
                           <li className="pb-2.5 pt-2 pl-8">
                             <div className="w-40">
@@ -214,6 +216,7 @@ const Users: UserCompnentI = ({ loading }, props: any) => {
                   <td className="px-4 py-5 dark:border-strokedark xl:pl-0 xl:pr-0 xl:pt-0">
                     {users.map((items: any) => {
                       return (
+                        // eslint-disable-next-line react/jsx-key
                         <ul className="border-b">
                           <li className="pt-4 pb-4 pl-8">
                             <div className="flex gap-2">

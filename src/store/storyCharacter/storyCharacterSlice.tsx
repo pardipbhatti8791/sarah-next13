@@ -21,7 +21,6 @@ export const storyCharacterSlice: StateCreator<
         id: "0",
         title: "",
         description: "",
-        storyTheme: { value: "", label: "" },
         type: "",
         attachment: "",
         story_theme_id: "",
@@ -83,7 +82,7 @@ export const storyCharacterSlice: StateCreator<
       toast.success("Updated Successfully!", {
         id: tid,
       });
-      redirect.push("/dashboard/Character-backgrounds");
+      redirect.push("/dashboard/character-backgrounds");
     } catch (error: any) {
       if (error.response.status === 401) {
         toast.error("Unauthorized request!,Signing you out");

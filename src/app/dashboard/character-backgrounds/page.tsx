@@ -1,9 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
-import { CharacterBackgroundsComponent } from "@/components/c-character-backgrounds/CharacterBackgrounds";
-import { CreateCharacterBackground } from "@/components/c-character-backgrounds/CreateCharacterBackground";
+import { CreateCharacterBackground } from "@/components/c-character-backgrounds/character-backgrounds";
 import { CreateStoryTheme } from "@/components/c-story-themes/CreateStoryTheme";
-import { StoryThemesComponent } from "@/components/c-story-themes/StoryThemes";
 import { useStore } from "@/store/store";
 import { useStoryThemesColumns } from "../story-theme/story-theme-columns";
 import CTableCompnent from "@/components/ui/table/CTable";

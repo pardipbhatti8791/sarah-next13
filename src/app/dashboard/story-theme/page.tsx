@@ -26,7 +26,7 @@ const StoryThemes = () => {
               <li className="text-primary">
                 <div className="flex items-center justify-center rounded-full h-14 w-14 bg-primary">
                   <span className="text-sm font-medium text-white">
-                    {store.storyThemes.length}
+                    {store.storyThemes.rows.length}
                   </span>
                 </div>
               </li>

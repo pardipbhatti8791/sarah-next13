@@ -19,7 +19,7 @@ class StoryThemesService {
   }
 
   updateStoryTheme({ id }: IEditStory, data: updateStoryTheme) {
-    return axiosInstance.patch(URI.storyThemes.updateStoryTheme(id!),data);
+    return axiosInstance.patch(URI.storyThemes.updateStoryTheme(id!), data);
   }
   deleteStoryTheme({ id }: IEditStory) {
     return axiosInstance.delete(URI.deleteStoryTheme(id!));

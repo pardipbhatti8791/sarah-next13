@@ -37,13 +37,11 @@ export interface IStoryCharacters {
 }
 
 export interface IStoryCharacter {
-  id: string;
   type: string;
   title: string;
   description: string;
   attachment: string;
   story_theme_id: string;
-  storyTheme: { value: string; label: string };
 }
 export interface ICreateStoryCharacter {
   type: string;
@@ -51,6 +49,5 @@ export interface ICreateStoryCharacter {
   description: string;
   attachment: string;
   story_theme_id: string;
-  storyTheme: { value: string; label: string };
 }
 export type updateCharacterTheme = Partial<IStoryCharacter>;

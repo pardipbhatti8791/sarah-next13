@@ -12,8 +12,8 @@ import { useRouter } from "next/navigation";
 const StoryCharacterSchema = Yup.object({
   title: Yup.string().required("* Title is required field"),
   description: Yup.string().required("*Description is required field"),
-  attachment_id: Yup.mixed().required("*Attachment is required"),
-  story_theme: Yup.object()
+  // attachment_id: Yup.mixed().required("*Attachment is required"),
+  story_theme_id: Yup.object()
     .shape({
       value: Yup.string().required("*Story theme is required field"),
       label: Yup.string().required("*Story theme is required field"),
@@ -32,18 +32,10 @@ const EditCreateCharacterBackground = (props: any) => {
   const router = useRouter();
   const store = useStore((state) => state);
   const [themeOption, setThemeOption] = useState([]);
-  const [storyCharacter,setStoryCharacter] = useState<IStoryCharacter[]>([])
 
-
-  useEffect(() => {
-    const priviousData = store.storyCharacters.rows.filter((line: any) => {
-      return line.id === props.params.id;
-    });
-    setStoryCharacter(priviousData);
-  }, [store.storyCharacters]);
-  console.log("messages",storyCharacter)
-
-  
+  const priviousData = store.storyCharacters.rows.filter((line: any) => {
+    return line.id === props.params.id;
+  });
 
   enum Types {
     character = "character",
@@ -59,9 +51,8 @@ const EditCreateCharacterBackground = (props: any) => {
       formData.append("file", event.target.files[0]);
 
       const response = await StoryCharacterService.uploadAttachment(formData);
-      setAttachmentId (response.data.url);
+      setAttachmentId(response.data.url);
       formik.setFieldValue("attachment", response.data.url);
-
     }
   };
 
@@ -75,25 +66,27 @@ const EditCreateCharacterBackground = (props: any) => {
       setThemeOption(StoryThemeData);
     });
   }, []);
-  
+
   const formik = useFormik({
     initialValues: {
-      title: storyCharacter.length > 0 ? storyCharacter[0].title :"",
-      description: storyCharacter.length > 0 ? storyCharacter[0].description : "",
-      story_theme_id: 
-      storyCharacter.length >0 
-      ? {
-        value:storyCharacter[0].story_theme_id ,
-        label: storyCharacter[0].story_theme_id,
-      } :{label :"", value:""},
-
-      type: 
-          storyCharacter.length > 0
+      title: priviousData.length > 0 ? priviousData[0].title : "",
+      description: priviousData.length > 0 ? priviousData[0].description : "",
+      story_theme_id:
+        priviousData.length > 0
           ? {
-        value: storyCharacter[0].type,
-        label: storyCharacter[0].type,
-      } : {label :"",value:""},
-      attachment: storyCharacter.length > 0 ?storyCharacter[0].attachment :"",
+              value: priviousData[0].story_theme_id,
+              label: priviousData[0].story_theme_id,
+            }
+          : { label: "", value: "" },
+
+      type:
+        priviousData.length > 0
+          ? {
+              value: priviousData[0].type,
+              label: priviousData[0].type,
+            }
+          : { label: "", value: "" },
+      attachment: priviousData.length > 0 ? priviousData[0].attachment : "",
     },
 
     validationSchema: StoryCharacterSchema,
@@ -106,7 +99,7 @@ const EditCreateCharacterBackground = (props: any) => {
       try {
         //@ts-ignore
         await store.updateStoryCharacter(
-          { id:props.params.id },
+          { id: props.params.id },
           nValues,
           router
         );
@@ -126,7 +119,6 @@ const EditCreateCharacterBackground = (props: any) => {
       className="bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark"
     >
       <form onSubmit={formik.handleSubmit}>
-        {JSON.stringify(storyCharacter)}
         <div className="p-6.5">
           <div className="mb-4.5">
             <label className="block mb-3 text-sm font-medium text-black dark:text-white">
@@ -186,7 +178,7 @@ const EditCreateCharacterBackground = (props: any) => {
               className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter dark:file:bg-white/30 dark:file:text-white file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:focus:border-primary"
               onChange={handleAttachmentChange}
             />
-            <div className="text-red-400">{formik?.errors?.attachment_id}</div>
+            {/* <div className="text-red-400">{formik?.errors?.attachment_id}</div> */}
           </div>
           <div className="mb-4.5">
             <label className="block mb-3 text-sm font-medium text-black dark:text-white">

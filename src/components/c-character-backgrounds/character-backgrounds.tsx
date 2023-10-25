@@ -49,9 +49,8 @@ export const CreateCharacterBackground = (props: any) => {
       formData.append("file", event.target.files[0]);
 
       const response = await StoryCharacterService.uploadAttachment(formData);
-      setAttachmentId (response.data.url);
+      setAttachmentId(response.data.url);
       formik.setFieldValue("attachment", response.data.url);
-
     }
   };
 
